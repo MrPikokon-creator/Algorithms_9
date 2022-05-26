@@ -24,25 +24,15 @@ def input_pit_depth() -> int:
 def solve(students: list[Student], pit_depth: int) -> list[Student]:
     """Возвращает список с максимальным количеством учеников, которые смогут выбраться."""
 
+    students.sort(key=lambda x: x.height)
     get_out_list = []  # Список учеников, которые могут выбраться
-    for top_student in students:
-        max_height = 0
-        temp_list = []
+    height = 0
 
-        for student in students:
-            if student is top_student:
-                continue
+    for student in reversed(students):
+        height += student.height
 
-            if max_height + student.height >= pit_depth:
-                temp_list.append(student)
-
-            max_height += student.height
-
-        if temp_list or max_height + top_student.height + top_student.length >= pit_depth:
-            temp_list.append(top_student)
-
-        if len(temp_list) > len(get_out_list):
-            get_out_list = temp_list.copy()
+        if height + student.length >= pit_depth:
+            get_out_list.append(student)
 
     return get_out_list
 
